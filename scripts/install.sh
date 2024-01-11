@@ -81,13 +81,14 @@ upload_2file() {
 }
 
 random_port() {
-  echo $((RANDOM % 65535 + 1024))
+    echo $((RANDOM % (65535 - 1024) + 1024))
 }
 
 gen_data() {
-  seq $FIRST_PORT $LAST_PORT | while read port; do
-    echo "$IP4/$(random_port)/$(gen64 $IP6)"
-  done
+    seq $FIRST_PORT $LAST_PORT | while read _; do
+        port=$(random_port)
+        echo "$IP4/$port"
+    done
 }
 
 gen_iptables() {
