@@ -77,7 +77,6 @@ upload_2file() {
 
     echo "Proxy is ready! Format IP:PORT"
     echo "Download zip archive from your Telegram channel/group."
-    echo "Password: ${PASS}"
 }
 
 
