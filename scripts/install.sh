@@ -48,14 +48,6 @@ EOF
 }
 
 upload_proxy() {
-  #local PASS=$(random)
-  #zip --password $PASS proxy.zip proxy.txt
-  #URL=$(curl -s --upload-file proxy.zip https://transfer.sh/proxy.zip)
-
-  #echo "Proxy is ready! Format IP:PORT:LOGIN:PASS"
-  #echo "Download zip archive from: ${URL}"
-  #echo "Password: ${PASS}"
-  
   sed -n '1,1000p' proxy.txt
 
 }
@@ -75,8 +67,6 @@ upload_2file() {
     # Upload the zip file to Telegram using curl
     curl -F "chat_id=${CHAT_ID}" -F "document=@proxy.zip" "https://api.telegram.org/bot${BOT_TOKEN}/sendDocument"
 
-    echo "Proxy is ready! Format IP:PORT"
-    echo "Download zip archive from your Telegram channel/group."
 }
 
 
