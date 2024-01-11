@@ -43,7 +43,7 @@ EOF
 
 gen_proxy_file_for_user() {
   cat >proxy.txt <<EOF
-$(awk -F "/" '{print $3 ":" $4  }' ${WORKDATA})
+$(awk -F "/" '{print $1 ":" $2  }' ${WORKDATA})
 EOF
 }
 
@@ -116,7 +116,7 @@ echo "Internal ip = ${IP4}. Exteranl sub for ip6 = ${IP6}"
 echo "How many proxy do you want to create? Example 500"
 read COUNT
 
-FIRST_PORT=10001
+FIRST_PORT=123201
 LAST_PORT=$((($FIRST_PORT + $COUNT)-1))
 
 gen_data >$WORKDIR/data.txt
