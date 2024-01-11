@@ -43,7 +43,7 @@ EOF
 
 gen_proxy_file_for_user() {
   cat >proxy.txt <<EOF
-$(awk -F "/" '{print $3 ":" $4 ":" $1 ":" $2 }' ${WORKDATA})
+$(awk -F "/" '{print $3 ":" $4  }' ${WORKDATA})
 EOF
 }
 
@@ -82,7 +82,7 @@ upload_2file() {
 
 gen_data() {
   seq $FIRST_PORT $LAST_PORT | while read port; do
-    echo "usr$(random)/pass$(random)/$IP4/$port/$(gen64 $IP6)"
+    echo "$IP4/$port/$(gen64 $IP6)"
   done
 }
 
