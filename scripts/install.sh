@@ -35,7 +35,6 @@ setgid 65535
 setuid 65535
 flush
 auth none
-"allow " $1 "\n" \
 "proxy -6 -n -a -p" $2 " -i" $1 " -e"$3"\n" \
 "flush\n"}' ${WORKDATA})
 EOF
