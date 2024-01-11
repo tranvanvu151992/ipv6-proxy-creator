@@ -102,7 +102,7 @@ echo "Internal ip = ${IP4}. External sub for ip6 = ${IP6}"
 echo "How many proxy do you want to create? Example 500"
 read COUNT
 
-FIRST_PORT=16931
+FIRST_PORT=10000
 LAST_PORT=$((($FIRST_PORT + $COUNT)-1))
 
 gen_data >$WORKDIR/data.txt
